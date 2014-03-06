@@ -1,0 +1,51 @@
+
+
+(lets (if false A,B=any)   B
+      (if true A,B=any)    A
+      (if bit A,A=any)     A
+
+      (if A,B,C=any)       (if (bit A) B C)
+
+      (if A=any)           A
+      (if A,B=any)         (if A B nil)
+      (if A,B,C~=any)      (if A B (if C~)))
+
+
+(lets (same?  A,B=any)     (same? B A)
+      (less?  A,B=any)     (more? B A)
+      (nsame? A,B=any)     (nsame? B A)
+      (nless? A,B=any)     (nmore? B A)
+
+      (same?  A,B=any)     (not (nsame? A B))
+      (less?  A,B=any)     (not (nless? A B))
+      (more?  A,B=any)     (not (nmore? A B))
+
+      (nsame? A,B=any)     (not (same? A B))
+      (nless? A,B=any)     (not (less? A B))
+      (nmore? A,B=any)     (not (more? A B))
+
+      (nsame? A,B=any)     (ior (less? A B) (more? A B))
+      (nless? A,B=any)     (ior (same? A B) (more? A B))
+      (nmore? A,B=any)     (ior (same? A B) (less? A B)))
+
+(lets (min A,B=any)        (if (more? A B) B A)
+      (max A,B=any)        (if (less? A B) B A)
+
+      (min A=lst)          (fold A min)
+      (max A=lst)          (fold A max))
+
+(lets (clip A,B,C=any)     (if (less? A B) B  (more? A C) C  A)
+      (clip A,B=any,range) (clip A (min B) (max B)))
+
+(let (compare A,B=any L,S,M=any)
+  (if (less? A B) L  (same? A B) S  (more? A B) M)))
+
+
+(lets:dub if     [?]
+          same?  [= ==]
+          less?  [<]
+          more?  [>]
+          nsame? [≠ !=]
+          nmore? [≤ !> <=]
+          nless? [≥ !< >=])
+

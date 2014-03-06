@@ -1,0 +1,82 @@
+
+
+(lets bit     <bit>
+      false   <bit false>
+      true    <bit true>
+      bits    <lst of=bit>)
+
+
+(lets (bit A=any)     (not (nil? A))
+      (nil? A=bit)    (not A)
+      (same? A,B=bit) (nxor A B)
+      (less? A,B=bit) (and (not A) B))
+
+(lets (not A=bit)     (if A false true)
+
+      (and A,B=bit)   (if A B A)
+      (ior A,B=bit)   (if A A B)
+      (xor A,B=bit)   (if A (not B) B)
+
+      (nand A~=bit)   (not (and A~))
+      (nior A~=bit)   (not (ior A~))
+      (nxor A~=bit)   (not (xor A~)))
+
+
+(lets (and A=bit)     A
+      (ior A=bit)     A
+      (xor A=bit)     false
+
+      (and A,A=bit)   (and A)
+      (ior A,A=bit)   (ior A)
+      (xor A,A=bit)   (xor A)
+
+      (and A~=bit)    (fold A and)
+      (ior A~=bit)    (fold A ior)
+      (xor A~=bit)    (fold A xor)
+
+      (and A,B=bit)   (and B A)
+      (ior A,B=bit)   (ior B A)
+      (xor A,B=bit)   (xor B A)
+
+      (nand A~=bit)   (ior (not A))
+      (nior A~=bit)   (and (not A))
+
+      (xor A,B=bit)   (and (ior A B) (nand A B))
+      (xor A,B=bit)   (nior (and A B) (nior A B)))
+
+
+(lets (not (not A=bit))          A
+
+      (and A=bit (not A))        false
+      (ior A=bit (not A))        true
+      (xor A=bit (not A))        true
+
+      (and A=bit (and B,C=bit))  (and (and A B) C)
+      (ior A=bit (ior B,C=bit))  (ior (ior A B) C)
+      (xor A=bit (xor B,C=bit))  (xor (xor A B) C)
+
+      (ior A=bit (and B,C=bit))  (and (ior A B) (ior A C))
+      (and A=bit (ior B,C=bit))  (ior (and A B) (and A C)))
+
+
+(lets (bits A=lst)    (map A bit)
+      (bits A~=any)   (join (map A bits))
+
+      (not A=bits)    (map A not)
+
+      (and A~=bits)   (if (one? A) (and A~)  (map (zip A~) {and $~}))
+      (ior A~=bits)   (if (one? A) (ior A~)  (map (zip A~) {ior $~}))
+      (xor A~=bits)   (if (one? A) (xor A~)  (map (zip A~) {xor $~}))
+      
+      (nand A~=bits)  (if (one? A) (nand A~) (map (zip A~) {nand $~}))
+      (nior A~=bits)  (if (one? A) (nior A~) (map (zip A~) {nior $~}))
+      (nxor A~=bits)  (if (one? A) (nxor A~) (map (zip A~) {nxor $~})))
+
+
+(lets:dub not    [¬]
+          and    [∧]
+          ior    [∧]
+          xor    [⊻]
+          nand   [⊼]
+          nior   [⊽]
+          nxor   [⊻̅ ])
