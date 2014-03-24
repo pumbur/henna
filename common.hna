@@ -38,7 +38,7 @@
       (clip A,B=any,range) (clip A (min B) (max B)))
 
 (let (compare A,B=any L,S,M=any)
-  (if (less? A B) L  (same? A B) S  (more? A B) M)))
+  (if (less? A B) L  (same? A B) S  (more? A B) M))
 
 
 (lets:dub if     [?]

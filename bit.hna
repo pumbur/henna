@@ -22,17 +22,13 @@
       (nxor A~=bit)   (not (xor A~)))
 
 
-(lets (and A=bit)     A
-      (ior A=bit)     A
-      (xor A=bit)     false
+(lets (and A~=bit)    (if (one? A) (head A) (fold A and))
+      (ior A~=bit)    (if (one? A) (head A) (fold A ior))
+      (xor A~=bit)    (if (one? A) false    (fold A xor))
 
       (and A,A=bit)   (and A)
       (ior A,A=bit)   (ior A)
       (xor A,A=bit)   (xor A)
-
-      (and A~=bit)    (fold A and)
-      (ior A~=bit)    (fold A ior)
-      (xor A~=bit)    (fold A xor)
 
       (and A,B=bit)   (and B A)
       (ior A,B=bit)   (ior B A)
@@ -64,18 +60,18 @@
 
       (not A=bits)    (map A not)
 
-      (and A~=bits)   (if (one? A) (and A~)  (map (zip A~) {and $~}))
-      (ior A~=bits)   (if (one? A) (ior A~)  (map (zip A~) {ior $~}))
-      (xor A~=bits)   (if (one? A) (xor A~)  (map (zip A~) {xor $~}))
+      (and A~=bits)   (if (one? A) (and (head A)~)  (map (zip A false) and))
+      (ior A~=bits)   (if (one? A) (ior (head A)~)  (map (zip A false) ior))
+      (xor A~=bits)   (if (one? A) (xor (head A)~)  (map (zip A false) xor))
       
-      (nand A~=bits)  (if (one? A) (nand A~) (map (zip A~) {nand $~}))
-      (nior A~=bits)  (if (one? A) (nior A~) (map (zip A~) {nior $~}))
-      (nxor A~=bits)  (if (one? A) (nxor A~) (map (zip A~) {nxor $~})))
+      (nand A~=bits)  (if (one? A) (nand (head A)~) (map (zip A false) nand))
+      (nior A~=bits)  (if (one? A) (nior (head A)~) (map (zip A false) nior))
+      (nxor A~=bits)  (if (one? A) (nxor (head A)~) (map (zip A false) nxor)))
 
 
 (lets:dub not    [¬]
           and    [∧]
-          ior    [∧]
+          ior    [∨]
           xor    [⊻]
           nand   [⊼]
           nior   [⊽]
