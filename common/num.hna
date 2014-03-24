@@ -1,0 +1,25 @@
+
+
+(lets num     <num>
+      nums    <lst of=num>)
+
+
+(lets (nil? A=num:nat)  (same? A 0)
+      (one? A=num:nat)  (same? A 1)
+      (two? A=num:nat)  (same? A 2)
+      (any? A=num:nat)  (more? A 0)
+      (lot? A=num:nat)  (more? A 1)
+      (few? A=num:nat)  (less? A 2))
+
+(lets (dec A=num:int)   (sub A 1)
+      (inc A=num:int)   (add A 1))
+
+
+(lets (neg? A=num:rea)  (less? A 0)
+      (pos? A=num:rea)  (more? A 0))
+
+(lets (neg A=num:rea)   (if (pos? A) (inv A) A)
+      (pos A=num:rea)   (if (neg? A) (inv A) A)
+      (inv A=num:rea)   (if (pos? A) (neg A) (neg? A) (pos A))
+      (inv A=num:rea)   (mul A -1))
+

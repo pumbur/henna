@@ -1,0 +1,56 @@
+
+
+(lets lst     <lst>
+      lsts    <lst of=lst>)
+
+
+(lets (nil? A=lst)        (size A)(nil?)
+      (one? A=lst)        (size A)(one?)
+      (two? A=lst)        (size A)(two?)
+      (any? A=lst)        (size A)(any?)
+      (lot? A=lst)        (size A)(lot?)
+      (few? A=lst)        (size A)(few?)
+
+      (nil? A,B=lst,act)  (size A B)(nil?)
+      (one? A,B=lst,act)  (size A B)(one?)
+      (two? A,B=lst,act)  (size A B)(two?)
+      (any? A,B=lst,act)  (size A B)(any?)
+      (lot? A,B=lst,act)  (size A B)(lot?)
+      (few? A,B=lst,act)  (size A B)(few?))
+
+(lets (size A,B=lst,act)  (size (find A B)) # @aka count
+      (size? A,B=lst,num) (same? B (size A))
+
+      (all? A,B=lst,act)  (and (any? A) (size? (find A B) (size A)))
+      (all? A,B=lst,act)  (not (any? A {not (play B $)}))
+
+      (of? A,B=lst,kin)   (all? A {kin? $ B}))
+
+
+(lets (head A=lst)           (at A 0)
+      (tail A=lst)           (at A -1)
+      (rest A=lst)           (at A 1...)
+      (body A=lst)           (at A 1..))
+
+(lets (head? A,B=lst)        (compare (size A) (size B) false (same? A B) (same? (head A (size B)) B))  # @aka prefix? 
+      (tail? A,B=lst)        (compare (size A) (size B) false (same? A B) (same? (tail A (size B)) B))) # @aka suffix?
+
+(lets (head A,B=lst,num:nat) (if (nil? B) [] (at A 0..B))
+      (tail A,B=lst:num:nat) (if (nil? B) [] (at A (inv B)...))
+      (rest A,B=lst:num:nat) (if (nil? B) A  (at A B...))
+      (body A,B=lst:num:nat) (if (nil? B) A  (at A B..(inv B))))
+
+
+(lets (map A,B=lst,act)   (fold A {lst $1~ (play B $2)} [])
+
+      (zip A=lsts)        (if (any? A nil?) [] [(map A head) (zip (map A rest))~])
+      (zip A,B=lsts,any)  (if (all? A nil?) [] [(map A {if (nil? $) B (head $)}) (zip (map A rest) B)~])
+
+      (flip A=lst)        (fold {lst $2 $1~} []) # @aka reverse
+
+      (find A,B=lst,act)  (map A {if (play B $) $ nil}) # @aka select, filter
+      (lose A,B=lst,act)  (map A {if (play B $) nil $}) # @aka reject
+
+      (join A=lsts)       (fold A {lst $1~ $2~} []) # @aka append, concat
+      (join A,B=lsts,lst) (fold A {lst $1~ B~ $2~} []))
+    
