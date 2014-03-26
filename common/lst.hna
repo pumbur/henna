@@ -36,21 +36,24 @@
       (tail? A,B=lst)        (compare (size A) (size B) false (same? A B) (same? (tail A (size B)) B))) # @aka suffix?
 
 (lets (head A,B=lst,num:nat) (if (nil? B) [] (at A 0..B))
-      (tail A,B=lst:num:nat) (if (nil? B) [] (at A (inv B)...))
-      (rest A,B=lst:num:nat) (if (nil? B) A  (at A B...))
-      (body A,B=lst:num:nat) (if (nil? B) A  (at A B..(inv B))))
+      (tail A,B=lst,num:nat) (if (nil? B) [] (at A (inv B)...))
+      (rest A,B=lst,num:nat) (if (nil? B) A  (at A B...))
+      (body A,B=lst,num:nat) (if (nil? B) A  (at A B..(inv B))))
 
 
-(lets (map A,B=lst,act)   (fold A {lst $1~ (play B $2)} [])
+(lets (map A,B=lst,act)   (fold A [] {lst $1~ (play B $2)})
 
       (zip A=lsts)        (if (any? A nil?) [] [(map A head) (zip (map A rest))~])
       (zip A,B=lsts,any)  (if (all? A nil?) [] [(map A {if (nil? $) B (head $)}) (zip (map A rest) B)~])
 
-      (flip A=lst)        (fold {lst $2 $1~} []) # @aka reverse
+      (flip A=lst)        (fold A [] {lst $2 $1~}) # @aka reverse
 
       (find A,B=lst,act)  (map A {if (play B $) $ nil}) # @aka select, filter
       (lose A,B=lst,act)  (map A {if (play B $) nil $}) # @aka reject
 
-      (join A=lsts)       (fold A {lst $1~ $2~} []) # @aka append, concat
-      (join A,B=lsts,lst) (fold A {lst $1~ B~ $2~} []))
+      (join A=lsts)       (fold A [] {lst $1~ $2~}) # @aka append, concat
+      (join A,B=lsts,lst) (fold A [] {lst $1~ B~ $2~}))
     
+(lets (fold A,B=lst,act)       (compare (size A) (num 1)  nil (head A) (fold (rest A) (head A) B))
+      (fold A,B,C=lst,any,act) (if (nil? A) B (fold (rest A) C (play C B (head A)))))
+

@@ -1,5 +1,13 @@
 
 
+(lets nil   <nil>
+      any   <any>
+      kin   <kin>
+      act   <act>
+      fault <fault>)
+
+
+
 (lets (if false A,B=any)   B
       (if true A,B=any)    A
       (if bit A,A=any)     A
@@ -40,7 +48,7 @@
 (let (compare A,B=any L,S,M=any)
   (if (less? A B) L  (same? A B) S  (more? A B) M))
 
-
+###
 (lets:dub if     [?]
           same?  [= ==]
           less?  [<]

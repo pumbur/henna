@@ -19,7 +19,7 @@
       (pos? A=num:rea)  (more? A 0))
 
 (lets (neg A=num:rea)   (if (pos? A) (inv A) A)
-      (pos A=num:rea)   (if (neg? A) (inv A) A)
-      (inv A=num:rea)   (if (pos? A) (neg A) (neg? A) (pos A))
+      (pos A=num:rea)   (if (neg? A) (inv A) A) # @aka abs
+      (inv A=num:rea)   (if (pos? A) (neg A) (neg? A) (pos A) A)
       (inv A=num:rea)   (mul A -1))
 
