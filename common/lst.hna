@@ -22,7 +22,7 @@
       (size? A,B=lst,num) (same? B (size A))
 
       (all? A,B=lst,act)  (and (any? A) (size? (find A B) (size A)))
-      (all? A,B=lst,act)  (not (any? A {not (play B $)}))
+      (all? A,B=lst,act)  (nil? A {not (play B $)})
 
       (of? A,B=lst,kin)   (all? A {kin? $ B}))
 
@@ -41,19 +41,20 @@
       (body A,B=lst,num:nat) (if (nil? B) A  (at A B..(inv B))))
 
 
-(lets (map A,B=lst,act)   (fold A [] {lst $1~ (play B $2)})
+(lets (map A,B=lst,act)      (fold A [] {lst $1~ (play B $2)})
 
-      (zip A=lsts)        (if (any? A nil?) [] [(map A head) (zip (map A rest))~])
-      (zip A,B=lsts,any)  (if (all? A nil?) [] [(map A {if (nil? $) B (head $)}) (zip (map A rest) B)~])
+      (zip A=lsts)           (if (any? A nil?) [] [(map A head) (zip (map A rest))~]) # @aka transpose
+      (zip A,B=lsts,any)     (if (all? A nil?) [] [(map A {if (nil? $) B (head $)}) (zip (map A rest) B)~])
 
-      (flip A=lst)        (fold A [] {lst $2 $1~}) # @aka reverse
+      (flip A=lst)           (fold A [] {lst $2 $1~}) # @aka reverse
+      (roll A,B=lst,num:int) (play {lst (rest A $)~ (head A $)~} (mod (size A) B)) # @aka rotate
 
-      (find A,B=lst,act)  (map A {if (play B $) $ nil}) # @aka select, filter
-      (lose A,B=lst,act)  (map A {if (play B $) nil $}) # @aka reject
+      (find A,B=lst,act)     (map A {if (play B $) $ nil}) # @aka select, filter
+      (lose A,B=lst,act)     (map A {if (play B $) nil $}) # @aka reject
 
-      (join A=lsts)       (fold A [] {lst $1~ $2~}) # @aka append, concat
-      (join A,B=lsts,lst) (fold A [] {lst $1~ B~ $2~}))
+      (join A=lsts)          (fold A [] {lst $1~ $2~}) # @aka append, concat
+      (join A,B=lsts,lst)    (fold A [] {lst $1~ B~ $2~}))
     
-(lets (fold A,B=lst,act)       (compare (size A) (num 1)  nil (head A) (fold (rest A) (head A) B))
-      (fold A,B,C=lst,any,act) (if (nil? A) B (fold (rest A) C (play C B (head A)))))
+(lets (fold A,B=lst,act)       (if (nil? A) nil (fold (rest A) (head A) B)) # @aka reduce, inject
+      (fold A,B,C=lst,any,act) (if (nil? A) B (fold (rest A) (play C B (head A)) C)))
 

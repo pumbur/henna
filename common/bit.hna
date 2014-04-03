@@ -24,15 +24,15 @@
 
 (lets (and A~=bit)    (fold A (head A) and)
       (ior A~=bit)    (fold A (head A) ior)
-      (xor A~=bit)    (fold A (head A) xor)
+      (xor A~=bit)    (if (one? A) (xor A A) (fold A xor))
 
       (and A,A=bit)   A
       (ior A,A=bit)   A
       (xor A,A=bit)   false
 
-      (and A,B=bit)   (and B A)
-      (ior A,B=bit)   (ior B A)
-      (xor A,B=bit)   (xor B A)
+      (and A~,B~=bit) (and B~ A~)
+      (ior A~,B~=bit) (ior B~ A~)
+      (xor A~,B~=bit) (xor B~ A~)
 
       (nand A~=bit)   (ior (not A))
       (nior A~=bit)   (and (not A))
